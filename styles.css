@@ -1,0 +1,52 @@
+function calcularPromedio() {
+    // Limpiar cualquier mensaje de alerta
+    document.getElementById('alert').textContent = '';
+    document.getElementById('result').style.display = 'none';
+
+    // Obtener los valores de los campos de entrada
+    const grade1 = parseFloat(document.getElementById('grade1').value);
+    const grade2 = parseFloat(document.getElementById('grade2').value);
+    const grade3 = parseFloat(document.getElementById('grade3').value);
+
+    // Porcentajes fijos
+    const percentageAccumulated = 0.60; // 60%
+    const percentageFinal = 0.40; // 40%
+
+    // Validar si al menos una calificación es válida
+    const validGrades = [grade1, grade2, grade3].filter(grade => !isNaN(grade) && grade >= 0 && grade <= 100);
+
+    if (validGrades.length < 1) {
+        document.getElementById('alert').textContent = "Por favor, ingresa al menos una calificación válida entre 0 y 100.";
+        return;
+    }
+
+    // Si hay menos de dos calificaciones válidas, usar solo la calificación disponible
+    const grades = validGrades.sort((a, b) => b - a);
+
+    // Si hay al menos dos calificaciones, tomar las dos mejores
+    const promedio = (grades[0] + (grades[1] || 0)) / (grades[1] ? 2 : 1); // Si hay solo una calificación, no la divide entre 2
+    const promedioAjustado = promedio * percentageAccumulated;
+
+    // Realizar las restas solicitadas con el promedio ajustado
+    const resta60 = 60 - promedioAjustado;
+    const resta71 = 71 - promedioAjustado;
+    const resta81 = 81 - promedioAjustado;
+    const resta91 = 91 - promedioAjustado;
+
+    // Calcular los porcentajes necesarios en el examen final y redondear hacia arriba
+    const porcentajeresta60 = Math.ceil((resta60 / (100 * percentageFinal)) * 100);
+    const porcentajeresta71 = Math.ceil((resta71 / (100 * percentageFinal)) * 100);
+    const porcentajeresta81 = Math.ceil((resta81 / (100 * percentageFinal)) * 100);
+    const porcentajeresta91 = Math.ceil((resta91 / (100 * percentageFinal)) * 100);
+
+    // Mostrar los resultados en el HTML con verificación de imposibilidad
+    document.getElementById('resultadoPromedio').textContent = `Promedio: ${promedioAjustado.toFixed(2)}`;
+    document.getElementById('resultadoRestas').innerHTML = `
+        ${porcentajeresta60 > 100 ? "No se puede llegar a 2" : "Necesitas hacer " + porcentajeresta60 + "% en el examen final para llegar a 2."}<br>
+        ${porcentajeresta71 > 100 ? "No se puede llegar a 3" : "Necesitas hacer " + porcentajeresta71 + "% en el examen final para llegar a 3."}<br>
+        ${porcentajeresta81 > 100 ? "No se puede llegar a 4" : "Necesitas hacer " + porcentajeresta81 + "% en el examen final para llegar a 4."}<br>
+        ${porcentajeresta91 > 100 ? "No se puede llegar a 5" : "Necesitas hacer " + porcentajeresta91 + "% en el examen final para llegar a 5."}
+    `;
+
+    document.getElementById('result').style.display = 'block';
+}
