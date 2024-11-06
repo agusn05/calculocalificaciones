@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calificación Promedio</title>
+    <link rel="stylesheet" href="estilo.css">  <!-- Enlace al archivo CSS -->
+</head>
+
+<body>
+    <div class="container">
+        <!-- Imagen del logo de la universidad -->
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Logo_americana-01.png/640px-Logo_americana-01.png" alt="Logo Universidad" id="logo" style="display:block; margin: 0 auto 20px; width: 150px; height: auto;">
+
+        <h2>Ingrese las calificaciones</h2>
+        <input type="number" id="grade1" min="0" max="100" placeholder="Calificación 1">
+        <input type="number" id="grade2" min="0" max="100" placeholder="Calificación 2">
+        <input type="number" id="grade3" min="0" max="100" placeholder="Calificación 3">
+
+        <button onclick="calcularPromedio()">Calcular</button>
+
+        <div id="alert" class="alert"></div>
+
+        <div id="result" class="result" style="display:none;">
+            <h3>Resultados:</h3>
+            <p id="resultadoPromedio"></p>
+            <p id="resultadoRestas"></p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>  <!-- Enlace al archivo JavaScript -->
+</body>
+
+</html>
+
