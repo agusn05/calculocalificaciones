@@ -1,84 +1,52 @@
-/* Modo oscuro */
+function calcularPromedio() {
+    // Limpiar cualquier mensaje de alerta
+    document.getElementById('alert').textContent = '';
+    document.getElementById('result').style.display = 'none';
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: #01010e;
-    color: #f1f1f1;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
+    // Obtener los valores de los campos de entrada
+    const grade1 = parseFloat(document.getElementById('grade1').value);
+    const grade2 = parseFloat(document.getElementById('grade2').value);
+    const grade3 = parseFloat(document.getElementById('grade3').value);
 
-.container {
-    background-color: #1f1f1f;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    width: 100%;
-    max-width: 500px;
-}
+    // Porcentajes fijos
+    const percentageAccumulated = 0.60; // 60%
+    const percentageFinal = 0.40; // 40%
 
-h2 {
-    text-align: center;
-    color: #e0e0e0;
-}
+    // Validar si al menos una calificación es válida
+    const validGrades = [grade1, grade2, grade3].filter(grade => !isNaN(grade) && grade >= 0 && grade <= 100);
 
-input[type="number"],
-button {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 5px;
-    border: 1px solid #555;
-    background-color: #333;
-    color: #f1f1f1;
-    font-size: 16px;
-}
+    if (validGrades.length < 1) {
+        document.getElementById('alert').textContent = "Por favor, ingresa al menos una calificación válida entre 0 y 100.";
+        return;
+    }
 
-input[type="number"]:focus,
-button:hover {
-    border-color: #2196F3;
-    background-color: #444;
-    outline: none;
-}
+    // Si hay menos de dos calificaciones válidas, usar solo la calificación disponible
+    const grades = validGrades.sort((a, b) => b - a);
 
-button {
-    background-color: #2196F3;
-    color: white;
-    border: none;
-    cursor: pointer;
-    font-size: 18px;
-}
+    // Si hay al menos dos calificaciones, tomar las dos mejores
+    const promedio = (grades[0] + (grades[1] || 0)) / (grades[1] ? 2 : 1); // Si hay solo una calificación, no la divide entre 2
+    const promedioAjustado = promedio * percentageAccumulated;
 
-button:hover {
-    background-color: #0b7dda;
-}
+    // Realizar las restas solicitadas con el promedio ajustado
+    const resta60 = 60 - promedioAjustado;
+    const resta71 = 71 - promedioAjustado;
+    const resta81 = 81 - promedioAjustado;
+    const resta91 = 91 - promedioAjustado;
 
-.result {
-    margin-top: 20px;
-    background-color: #2a2a2a;
-    padding: 15px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
+    // Calcular los porcentajes necesarios en el examen final y redondear hacia arriba
+    const porcentajeresta60 = Math.ceil((resta60 / (100 * percentageFinal)) * 100);
+    const porcentajeresta71 = Math.ceil((resta71 / (100 * percentageFinal)) * 100);
+    const porcentajeresta81 = Math.ceil((resta81 / (100 * percentageFinal)) * 100);
+    const porcentajeresta91 = Math.ceil((resta91 / (100 * percentageFinal)) * 100);
 
-.result p {
-    font-size: 16px;
-    margin: 8px 0;
-    color: #f1f1f1;
-}
+    // Mostrar los resultados en el HTML con verificación de imposibilidad
+    document.getElementById('resultadoPromedio').textContent = `Promedio: ${promedioAjustado.toFixed(2)}`;
+    document.getElementById('resultadoRestas').innerHTML = `
+        ${porcentajeresta60 > 100 ? "No se puede llegar a 2" : "Necesitas hacer " + porcentajeresta60 + "% en el examen final para llegar a 2."}<br>
+        ${porcentajeresta71 > 100 ? "No se puede llegar a 3" : "Necesitas hacer " + porcentajeresta71 + "% en el examen final para llegar a 3."}<br>
+        ${porcentajeresta81 > 100 ? "No se puede llegar a 4" : "Necesitas hacer " + porcentajeresta81 + "% en el examen final para llegar a 4."}<br>
+        ${porcentajeresta91 > 100 ? "No se puede llegar a 5" : "Necesitas hacer " + porcentajeresta91 + "% en el examen final para llegar a 5."}
+    `;
 
-.result .highlight {
-    font-weight: bold;
-    color: #2196F3;
-}
-
-.alert {
-    color: red;
-    text-align: center;
-    margin: 10px 0;
-    font-size: 14px;
+    document.getElementById('result').style.display = 'block';
 }
